@@ -176,7 +176,7 @@
 </head>
 <body>
     <div class="form-container">
-        <h1>Traditional BCP Parishes</h1>
+        <h1>Traditional BCP Parishes in the ACNA</h1>
         <iframe src="https://www.google.com/maps/d/embed?mid=1BWzfgphr2w5r464wtup31Z8xshV3IWo&ehbc=2E312F&noprof=1" width="640" height="480"></iframe>
         <p>
           <h4>If you know of a traditional BCP parish not currently listed on the map above, enter it here. Admin review all entries to confirm they are authentic.</h4>
@@ -201,6 +201,40 @@
                 <label for="state">State *</label>
                 <input type="text" id="state" name="state" placeholder="e.g. MI" required>
             </div>
+            <div class="form-group">
+                <label for="diocese">Diocese *</label>
+                <select id="diocese" name="diocese" required>
+                    <option value="">Select a diocese</option>
+                    <option value="All Nations">All Nations</option>
+                    <option value="All Saints">All Saints</option>
+                    <option value="Armed Forces and Chaplaincy">Armed Forces and Chaplaincy</option>
+                    <option value="Canada">Canada</option>
+                    <option value="Carolinas">Carolinas</option>
+                    <option value="Cascadia">Cascadia</option>
+                    <option value="Central States (REC)">Central States (REC)</option>
+                    <option value="Christ Our Hope">Christ Our Hope</option>
+                    <option value="Churches for the Sake of Others">Churches for the Sake of Others</option>
+                    <option value="Fort Worth">Fort Worth</option>
+                    <option value="Great Lakes">Great Lakes</option>
+                    <option value="Gulf Atlantic">Gulf Atlantic</option>
+                    <option value="Living Word">Living Word</option>
+                    <option value="Mid-America (REC)">Mid-America (REC)</option>
+                    <option value="Mid-Atlantic">Mid-Atlantic</option>
+                    <option value="New England">New England</option>
+                    <option value="Northeast and Mid-Atlantic (REC)">Northeast and Mid-Atlantic (REC)</option>
+                    <option value="Pittsburgh">Pittsburgh</option>
+                    <option value="Quincy">Quincy</option>
+                    <option value="Rocky Mountains">Rocky Mountains</option>
+                    <option value="San Joaquin">San Joaquin</option>
+                    <option value="South">South</option>
+                    <option value="South Carolina">South Carolina</option>
+                    <option value="Southeast (Reformed Episcopal)">Southeast (Reformed Episcopal)</option>
+                    <option value="Southwest">Southwest</option>
+                    <option value="Upper Midwest">Upper Midwest</option>
+                    <option value="Western Anglicans">Western Anglicans</option>
+                    <option value="Western Gulf Coast">Western Gulf Coast</option>
+                </select>
+            </div>
              <div class="form-group">
                 <label for="website">Website (if applicable)</label>
                 <input type="text" id="website" name="website" placeholder="Website">
@@ -215,7 +249,6 @@
                     <option value="2019 BCP (1662 Order)">2019 BCP (1662 Order)</option>
                 </select>
             </div>
-
             <button type="submit" class="submit-btn" id="submitBtn">
                 Submit
             </button>
