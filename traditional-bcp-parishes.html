@@ -177,16 +177,16 @@
     <div class="form-container">
         <h1>Traditional BCP Parish Entry</h1>
         <p>
-          <h4>If you know of a traditional BCP parish not currently listed on the map above, enter it here. Admin review all entries to confirm they are authentic.</h3>
+          <h4>If you know of a traditional BCP parish not currently listed on the map above, enter it here. Admin review all entries to confirm they are authentic.</h4>
         </p>
-        <form id="BCP.parishes">
+        <form name="submit-to-google-sheet" id="contactForm">
             <div class="form-group">
                 <label for="parish-name">Parish Name *</label>
-                <input type="text" id="parish-name" name="parish-name" placeholder = "e.g. Holy Trinity" required>
+                <input type="text" id="parish-name" name="parish-name" placeholder="e.g. Holy Trinity" required>
             </div>
 
             <div class="form-group">
-                <label for="street-address">Street Address *</label>
+                <label for="address">Street Address *</label>
                 <input type="text" id="street-address" name="street-address" placeholder="e.g. 263 Spring Street" required>
             </div>
 
@@ -201,8 +201,8 @@
             </div>
 
             <div class="form-group">
-                <label for="subject">Prayer Book *</label>
-                <select id="subject" name="subject" required>
+                <label for="bcp-type">Prayer Book *</label>
+                <select id="bcp-type" name="bcp-type" required>
                     <option value="">Select a Prayer Book</option>
                     <option value="1662 BCP IE">1662 BCP IE</option>
                     <option value="1928 BCP">1928 BCP</option>
@@ -219,16 +219,49 @@
         </form>
     </div>
 
-  <script>
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbwKze56yRfRPKcaGptGf3loDwaUNX6t_-NzPE4_kY7bYyYZWveDmXZTlmD9yaTYiL-m7Q/exec'
-  const form = document.forms['BCP.parishes']
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwKze56yRfRPKcaGptGf3loDwaUNX6t_-NzPE4_kY7bYyYZWveDmXZTlmD9yaTYiL-m7Q/exec'
+        const form = document.forms['submit-to-google-sheet']
+        const submitBtn = document.getElementById('submitBtn')
+        const statusMessage = document.getElementById('statusMessage')
 
-  form.addEventListener('submit', e => {
-    e.preventDefault()
-    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-      .then(response => console.log('Success!', response))
-      .catch(error => console.error('Error!', error.message))
-  })
-  </script>
+        function showMessage(message, type) {
+            statusMessage.textContent = message
+            statusMessage.className = `status-message show ${type}`
+            setTimeout(() => {
+                statusMessage.classList.remove('show')
+            }, 5000)
+        }
+
+        form.addEventListener('submit', e => {
+            e.preventDefault()
+            
+            // Show loading state
+            submitBtn.disabled = true
+            submitBtn.innerHTML = '<span class="loading"></span>Submitting...'
+            
+            fetch(scriptURL, { 
+                method: 'POST', 
+                body: new FormData(form)
+            })
+            .then(response => {
+                if (response.ok) {
+                    showMessage('Parish submitted successfully! Thank you.', 'success')
+                    form.reset() // Clear the form
+                } else {
+                    throw new Error('Network response was not ok')
+                }
+            })
+            .catch(error => {
+                console.error('Error!', error.message)
+                showMessage('Error submitting parish. Please try again.', 'error')
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.disabled = false
+                submitBtn.innerHTML = 'Submit'
+            })
+        })
+    </script>
 </body>
 </html>
