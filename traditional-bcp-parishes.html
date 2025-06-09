@@ -179,7 +179,7 @@
         <p>
           <h4>If you know of a traditional BCP parish not currently listed on the map above, enter it here. Admin review all entries to confirm they are authentic.</h3>
         </p>
-        <form id="contactForm">
+        <form id="BCP.parishes">
             <div class="form-group">
                 <label for="parish-name">Parish Name *</label>
                 <input type="text" id="parish-name" name="parish-name" placeholder = "e.g. Holy Trinity" required>
@@ -221,7 +221,7 @@
 
   <script>
   const scriptURL = 'https://script.google.com/macros/s/AKfycbwKze56yRfRPKcaGptGf3loDwaUNX6t_-NzPE4_kY7bYyYZWveDmXZTlmD9yaTYiL-m7Q/exec'
-  const form = document.forms['submit-to-google-sheet']
+  const form = document.forms['BCP.parishes']
 
   form.addEventListener('submit', e => {
     e.preventDefault()
