@@ -15,22 +15,23 @@
             font-family: 'Garamond', serif;
             background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/0a/Canaletto_-_St._Paul%27s_Cathedral_-_Google_Art_Project.jpg');
             background-size: cover;
+            background-position-x: 65%;
             min-height: 40vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding-top: 200px;
-            padding-bottom: 100px;
+            padding-top: 35px;
+            padding-bottom: 35px;
         }
 
         .form-container {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.70);
             backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 40px;
+            border-radius: 10px;
+            padding: 20px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 700px;
+            max-width: 550px;
             transform: translateY(0);
             transition: all 0.3s ease;
         }
@@ -43,14 +44,14 @@
         h1 {
             text-align: center;
             color: #333;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
             font-size: 2.2em;
             font-weight: 300;
             letter-spacing: -1px;
         }
 
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 12px;
             position: relative;
         }
 
@@ -92,7 +93,7 @@
 
         .submit-btn {
             width: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #af9674 0%, #6b8588 100%);
             color: white;
             padding: 18px;
             border: none;
@@ -176,10 +177,10 @@
 </head>
 <body>
     <div class="form-container">
-        <h1>Traditional BCP Parishes in the ACNA</h1>
-        <iframe src="https://www.google.com/maps/d/embed?mid=1BWzfgphr2w5r464wtup31Z8xshV3IWo&ehbc=2E312F&noprof=1" width="640" height="480"></iframe>
+        <h1>ACNA Traditional BCP Parishes</h1>
+        <iframe src="https://www.google.com/maps/d/embed?mid=1BWzfgphr2w5r464wtup31Z8xshV3IWo&ehbc=2E312F&noprof=1" width="500" height=350"></iframe>
         <p>
-          <h4>If you know of a traditional BCP parish not currently listed on the map above, enter it here. Admin review all entries to confirm they are authentic.</h4>
+          <h4>If you know of a traditional BCP parish not currently listed on the map, enter it here and it will be reviewed for addition.</h4>
         </p>
         <form name="submit-to-google-sheet" id="contactForm">
             <div class="form-group">
