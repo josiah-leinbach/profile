@@ -35,6 +35,21 @@
             transform: translateY(0);
             transition: all 0.3s ease;
         }
+        
+        .map-responsive{
+          overflow:hidden;
+          padding-bottom:56.25%;
+          position:relative;
+          height:0;
+        }
+ 
+        .map-responsive iframe{
+          left:0;
+          top:0;
+          height:100%;
+          width:100%;
+          position:absolute;
+        }
 
         .form-container:hover {
             transform: translateY(-5px);
@@ -178,7 +193,9 @@
 <body>
     <div class="form-container">
         <h1>ACNA Traditional BCP Parishes</h1>
-        <iframe src="https://www.google.com/maps/d/embed?mid=1BWzfgphr2w5r464wtup31Z8xshV3IWo&ehbc=2E312F&noprof=1" width="500" height=350"></iframe>
+        <div class="map-responsive">
+        <iframe src="https://www.google.com/maps/d/embed?mid=1BWzfgphr2w5r464wtup31Z8xshV3IWo&ehbc=2E312F&noprof=1" width="500" height="350" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
         <p>
           <h4>If you know of a traditional BCP parish not currently listed on the map, enter it here and it will be reviewed for addition.</h4>
         </p>
