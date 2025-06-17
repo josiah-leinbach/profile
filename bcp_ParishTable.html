@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Google Sheets Data</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #4CAF50;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .data-table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .data-table th {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            font-weight: 600;
+            padding: 15px;
+            text-align: left;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.3s ease;
+        }
+
+        .data-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .data-table tr:hover {
+            background-color: #e8f5e8;
+            transform: scale(1.01);
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .last-updated {
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 6px;
+        }
+
+        .error {
+            color: #d32f2f;
+            text-align: center;
+            padding: 20px;
+            background: #ffebee;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .data-table {
+                font-size: 0.9em;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Live Data Dashboard</h1>
+            <p>Real-time data from Google Sheets</p>
+        </div>
+        
+        <div class="content">
+            <button class="refresh-btn" onclick="loadData()">🔄 Refresh Data</button>
+            
+            <div id="lastUpdated" class="last-updated"></div>
+            
+            <div id="tableContainer">
+                <div class="loading">Loading data...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Replace with your Google Apps Script web app URL
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxEK5lU8IOmLYIv13zUnz5HA69lht50tlxVIHS-M9LnwpYb9SHaEm7huL9hSsDZ1wCBSA/exec';
+        
+        async function loadData() {
+            const container = document.getElementById('tableContainer');
+            const lastUpdated = document.getElementById('lastUpdated');
+            
+            try {
+                container.innerHTML = '<div class="loading">Loading data...</div>';
+                
+                // Option 1: Fetch HTML directly from your web app
+                const response = await fetch(SCRIPT_URL);
+                const html = await response.text();
+                
+                // Extract just the table part (you might need to adjust this)
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const table = doc.querySelector('.data-table');
+                
+                if (table) {
+                    container.innerHTML = table.outerHTML;
+                } else {
+                    container.innerHTML = html; // If the response is just the table
+                }
+                
+                lastUpdated.textContent = `Last updated: ${new Date().toLocaleString()}`;
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                container.innerHTML = '<div class="error">Error loading data. Please try again.</div>';
+            }
+        }
+
+        // Alternative function to fetch JSON data and build table
+        async function loadDataFromJson() {
+            const container = document.getElementById('tableContainer');
+            const lastUpdated = document.getElementById('lastUpdated');
+            
+            try {
+                container.innerHTML = '<div class="loading">Loading data...</div>';
+                
+                const response = await fetch(SCRIPT_URL + '?action=json');
+                const data = await response.json();
+                
+                if (data.data && data.data.length > 0) {
+                    const html = buildTableFromJson(data.data);
+                    container.innerHTML = html;
+                    lastUpdated.textContent = `Last updated: ${new Date(data.lastUpdated).toLocaleString()}`;
+                } else {
+                    container.innerHTML = '<div class="error">No data available.</div>';
+                }
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                container.innerHTML = '<div class="error">Error loading data. Please try again.</div>';
+            }
+        }
+
+        function buildTableFromJson(data) {
+            if (data.length === 0) return '<p>No data available</p>';
+            
+            const headers = Object.keys(data[0]);
+            
+            let html = '<table class="data-table"><thead><tr>';
+            headers.forEach(header => {
+                html += `<th>${escapeHtml(header)}</th>`;
+            });
+            html += '</tr></thead><tbody>';
+            
+            data.forEach(row => {
+                html += '<tr>';
+                headers.forEach(header => {
+                    html += `<td>${escapeHtml(row[header] || '')}</td>`;
+                });
+                html += '</tr>';
+            });
+            
+            html += '</tbody></table>';
+            return html;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Load data when page loads
+        window.addEventListener('load', loadData);
+        
+        // Auto-refresh every 5 minutes (optional)
+        setInterval(loadData, 5 * 60 * 1000);
+    </script>
+</body>
+</html>
