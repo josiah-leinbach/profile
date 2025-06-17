@@ -3,51 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Google Sheets Data</title>
+    <title>Searchable Data Table</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        * {
             margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Garamond', serif;
+            background-image: url('https://d3d00swyhr67nd.cloudfront.net/w944h944/collection/LLR/LCNUG/LLR_LCNUG_1927_2336-001.jpg');
+            background-attachment: fixed;
             min-height: 100vh;
+            padding: 20px;
+            color: #333;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(45deg, #4CAF50, #45a049);
-            color: white;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
             padding: 30px;
-            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
 
-        .header h1 {
-            margin: 0;
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
             font-size: 2.5em;
             font-weight: 300;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .header p {
-            margin: 10px 0 0 0;
-            opacity: 0.9;
+        .search-container {
+            margin-bottom: 25px;
+            position: relative;
         }
 
-        .content {
-            padding: 30px;
+        .search-box {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e6ed;
+            border-radius: 50px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            font-size: 20px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: white;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        th {
+            background: linear-gradient(135deg, #af9674 0%, #6b8588 100%);
+            color: white;
+            font-weight: 600;
+            padding: 18px 15px;
+            text-align: left;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
+        th:hover {
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+            transform: translateY(-1px);
+        }
+
+        th:first-child {
+            border-top-left-radius: 15px;
+        }
+
+        th:last-child {
+            border-top-right-radius: 15px;
+        }
+
+        th .sort-icon {
+            margin-left: 8px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        th:hover .sort-icon {
+            opacity: 1;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e8ecf3;
+            transition: all 0.3s ease;
+        }
+
+        tr:hover td {
+            background-color: #f8f9ff;
+            transform: scale(1.01);
+        }
+
+        tr:nth-child(even) td {
+            background-color: #fafbff;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+            font-style: italic;
+            font-size: 18px;
         }
 
         .loading {
             text-align: center;
-            padding: 50px;
-            color: #666;
+            padding: 40px;
+            color: #667eea;
+            font-size: 18px;
         }
 
         .loading::after {
@@ -55,230 +158,237 @@
             display: inline-block;
             width: 20px;
             height: 20px;
-            border: 2px solid #4CAF50;
+            border: 3px solid #667eea;
             border-radius: 50%;
             border-top-color: transparent;
-            animation: spin 1s linear infinite;
+            animation: spin 1s ease-in-out infinite;
             margin-left: 10px;
+        }
+
+        .stats {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, #af9674 0%, #6b8588 100%);
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .stats-text {
+            color: #2c3e50;
+            font-weight: 500;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
-        .data-table {
-            border-collapse: collapse;
-            width: 100%;
-            margin: 20px 0;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .data-table th {
-            background: linear-gradient(45deg, #4CAF50, #45a049);
-            color: white;
-            font-weight: 600;
-            padding: 15px;
-            text-align: left;
-            font-size: 0.95em;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .data-table td {
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-            transition: background-color 0.3s ease;
-        }
-
-        .data-table tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-
-        .data-table tr:hover {
-            background-color: #e8f5e8;
-            transform: scale(1.01);
-            transition: all 0.3s ease;
-        }
-
-        .refresh-btn {
-            background: linear-gradient(45deg, #4CAF50, #45a049);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: all 0.3s ease;
-            margin-bottom: 20px;
-        }
-
-        .refresh-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
-        }
-
-        .last-updated {
-            text-align: center;
-            color: #666;
-            font-size: 0.9em;
-            margin-bottom: 20px;
-            padding: 10px;
-            background: #f0f0f0;
-            border-radius: 6px;
-        }
-
-        .error {
-            color: #d32f2f;
-            text-align: center;
-            padding: 20px;
-            background: #ffebee;
-            border-radius: 6px;
-            margin: 20px 0;
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @media (max-width: 768px) {
             .container {
-                margin: 10px;
-                border-radius: 8px;
-            }
-            
-            .header {
                 padding: 20px;
+                margin: 10px;
             }
             
-            .header h1 {
+            h1 {
                 font-size: 2em;
             }
             
-            .content {
-                padding: 20px;
-            }
-            
-            .data-table {
-                font-size: 0.9em;
-            }
-            
-            .data-table th,
-            .data-table td {
-                padding: 10px 8px;
+            th, td {
+                padding: 12px 8px;
+                font-size: 14px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>Live Data Dashboard</h1>
-            <p>Real-time data from Google Sheets</p>
-        </div>
+        <h1>📊 Data Dashboard</h1>
         
-        <div class="content">
-            <button class="refresh-btn" onclick="loadData()">🔄 Refresh Data</button>
-            
-            <div id="lastUpdated" class="last-updated"></div>
-            
-            <div id="tableContainer">
-                <div class="loading">Loading data...</div>
-            </div>
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-box" placeholder="Search by parish information">
+            <span class="search-icon">🔍</span>
+        </div>
+
+        <div class="stats" id="statsContainer">
+            <div class="stats-text" id="statsText">Loading data...</div>
+        </div>
+
+        <div class="table-container">
+            <table id="dataTable">
+                <thead id="tableHead">
+                    <!-- Headers will be populated by JavaScript -->
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td colspan="100%" class="loading">Loading data from Google Apps Script...</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
     <script>
-        // Replace with your Google Apps Script web app URL
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxEK5lU8IOmLYIv13zUnz5HA69lht50tlxVIHS-M9LnwpYb9SHaEm7huL9hSsDZ1wCBSA/exec';
-        
-        async function loadData() {
-            const container = document.getElementById('tableContainer');
-            const lastUpdated = document.getElementById('lastUpdated');
-            
-            try {
-                container.innerHTML = '<div class="loading">Loading data...</div>';
+        class SearchableTable {
+            constructor() {
+                this.data = [];
+                this.filteredData = [];
+                this.sortColumn = null;
+                this.sortDirection = 'asc';
+                this.searchInput = document.getElementById('searchInput');
+                this.tableHead = document.getElementById('tableHead');
+                this.tableBody = document.getElementById('tableBody');
+                this.statsText = document.getElementById('statsText');
                 
-                // Option 1: Fetch HTML directly from your web app
-                const response = await fetch(SCRIPT_URL);
-                const html = await response.text();
-                
-                // Extract just the table part (you might need to adjust this)
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const table = doc.querySelector('.data-table');
-                
-                if (table) {
-                    container.innerHTML = table.outerHTML;
-                } else {
-                    container.innerHTML = html; // If the response is just the table
-                }
-                
-                lastUpdated.textContent = `Last updated: ${new Date().toLocaleString()}`;
-                
-            } catch (error) {
-                console.error('Error loading data:', error);
-                container.innerHTML = '<div class="error">Error loading data. Please try again.</div>';
+                this.init();
             }
-        }
 
-        // Alternative function to fetch JSON data and build table
-        async function loadDataFromJson() {
-            const container = document.getElementById('tableContainer');
-            const lastUpdated = document.getElementById('lastUpdated');
-            
-            try {
-                container.innerHTML = '<div class="loading">Loading data...</div>';
-                
-                const response = await fetch(SCRIPT_URL + '?action=json');
-                const data = await response.json();
-                
-                if (data.data && data.data.length > 0) {
-                    const html = buildTableFromJson(data.data);
-                    container.innerHTML = html;
-                    lastUpdated.textContent = `Last updated: ${new Date(data.lastUpdated).toLocaleString()}`;
-                } else {
-                    container.innerHTML = '<div class="error">No data available.</div>';
-                }
-                
-            } catch (error) {
-                console.error('Error loading data:', error);
-                container.innerHTML = '<div class="error">Error loading data. Please try again.</div>';
+            init() {
+                this.searchInput.addEventListener('input', () => this.handleSearch());
+                this.loadData();
             }
-        }
 
-        function buildTableFromJson(data) {
-            if (data.length === 0) return '<p>No data available</p>';
-            
-            const headers = Object.keys(data[0]);
-            
-            let html = '<table class="data-table"><thead><tr>';
-            headers.forEach(header => {
-                html += `<th>${escapeHtml(header)}</th>`;
-            });
-            html += '</tr></thead><tbody>';
-            
-            data.forEach(row => {
-                html += '<tr>';
-                headers.forEach(header => {
-                    html += `<td>${escapeHtml(row[header] || '')}</td>`;
+            // This function will be called by your Google Apps Script
+            loadData() {
+                // Replace this with your actual Google Apps Script web app URL
+                const scriptUrl = 'https://script.google.com/macros/s/AKfycbxxmbipQpvwDQ4vTmDrwKK9lJWFgHoSoavsGSEf7t8X5HcOjg5osV-GT_u1bwhm0OCE7w/exec';
+                // Uncomment and modify this section to fetch from your Google Apps Script:
+
+                fetch(scriptUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        this.setData(data);
+                    })
+                    .catch(error => {
+                        console.error('Error loading data:', error);
+                        this.showError('Failed to load data from Google Apps Script');
+                    });
+            }
+
+            setData(data) {
+                this.data = data;
+                this.filteredData = [...data];
+                this.renderTable();
+                this.updateStats();
+            }
+
+            renderTable() {
+                if (this.data.length === 0) {
+                    this.tableBody.innerHTML = '<tr><td colspan="100%" class="no-data">No data available</td></tr>';
+                    return;
+                }
+
+                // Create headers
+                const headers = Object.keys(this.data[0]);
+                this.tableHead.innerHTML = headers.map(header => 
+                    `<th onclick="tableInstance.sortBy('${header}')">
+                        ${this.formatHeader(header)}
+                        <span class="sort-icon">${this.getSortIcon(header)}</span>
+                    </th>`
+                ).join('');
+
+                // Create rows
+                this.tableBody.innerHTML = this.filteredData.map(row => 
+                    `<tr>${headers.map(header => 
+                        `<td>${this.formatCell(row[header])}</td>`
+                    ).join('')}</tr>`
+                ).join('');
+            }
+
+            formatHeader(header) {
+                return header.charAt(0).toUpperCase() + header.slice(1).replace(/([A-Z])/g, ' $1');
+            }
+
+            formatCell(value) {
+                if (typeof value === 'number' && value > 1000) {
+                    return value.toLocaleString();
+                }
+                if (typeof value === 'string' && value.includes('@')) {
+                    return `<a href="mailto:${value}">${value}</a>`;
+                }
+                return value || '';
+            }
+
+            getSortIcon(column) {
+                if (this.sortColumn !== column) return '↕️';
+                return this.sortDirection === 'asc' ? '↑' : '↓';
+            }
+
+            sortBy(column) {
+                if (this.sortColumn === column) {
+                    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+                } else {
+                    this.sortColumn = column;
+                    this.sortDirection = 'asc';
+                }
+
+                this.filteredData.sort((a, b) => {
+                    let aVal = a[column];
+                    let bVal = b[column];
+
+                    if (typeof aVal === 'string') {
+                        aVal = aVal.toLowerCase();
+                        bVal = bVal.toLowerCase();
+                    }
+
+                    if (aVal < bVal) return this.sortDirection === 'asc' ? -1 : 1;
+                    if (aVal > bVal) return this.sortDirection === 'asc' ? 1 : -1;
+                    return 0;
                 });
-                html += '</tr>';
-            });
-            
-            html += '</tbody></table>';
-            return html;
+
+                this.renderTable();
+            }
+
+            handleSearch() {
+                const searchTerm = this.searchInput.value.toLowerCase();
+                
+                if (searchTerm === '') {
+                    this.filteredData = [...this.data];
+                } else {
+                    this.filteredData = this.data.filter(row => 
+                        Object.values(row).some(value => 
+                            String(value).toLowerCase().includes(searchTerm)
+                        )
+                    );
+                }
+
+                this.renderTable();
+                this.updateStats();
+            }
+
+            updateStats() {
+                const total = this.data.length;
+                const filtered = this.filteredData.length;
+                const searchTerm = this.searchInput.value;
+
+                if (searchTerm) {
+                    this.statsText.textContent = `Showing ${filtered} of ${total} records (filtered by "${searchTerm}")`;
+                } else {
+                    this.statsText.textContent = `Showing ${total} records`;
+                }
+            }
+
+            showError(message) {
+                this.tableBody.innerHTML = `<tr><td colspan="100%" class="no-data">❌ ${message}</td></tr>`;
+            }
         }
 
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
+        // Initialize the table
+        const tableInstance = new SearchableTable();
 
-        // Load data when page loads
-        window.addEventListener('load', loadData);
-        
-        // Auto-refresh every 5 minutes (optional)
-        setInterval(loadData, 5 * 60 * 1000);
+        // Global function that can be called by Google Apps Script
+        window.updateTableData = function(data) {
+            tableInstance.setData(data);
+        };
     </script>
 </body>
 </html>
