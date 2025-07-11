@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traditional BCP Parishes Map</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Garamond', serif;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/0a/Canaletto_-_St._Paul%27s_Cathedral_-_Google_Art_Project.jpg');
+            background-size: cover;
+            background-position-x: 65%;
+            min-height: 40vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 45px;
+            padding-bottom: 45px;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.70);
+            backdrop-filter: blur(20px);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 550px;
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+        
+        .map-responsive{
+          overflow:hidden;
+          padding-bottom:56.25%;
+          position:relative;
+          height:0;
+        }
+ 
+        .map-responsive iframe{
+          left:0;
+          top:0;
+          height:100%;
+          width:100%;
+          position:absolute;
+        }
+
+        .form-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+            font-weight: 300;
+            letter-spacing: -1px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+            font-size: 0.95em;
+            transition: color 0.3s ease;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #fafbfc;
+            outline: none;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        input:focus + label, textarea:focus + label, select:focus + label {
+            color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #af9674 0%, #6b8588 100%);
+            color: white;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .status-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .status-message.show {
+            opacity: 1;
+        }
+
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>ACNA Traditional BCP Parishes</h1>
+        <div class="map-responsive">
+        <iframe src="https://www.google.com/maps/d/embed?mid=1BWzfgphr2w5r464wtup31Z8xshV3IWo&ehbc=2E312F&noprof=1" width="500" height="350" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <p>
+          <h4>If you know of a traditional BCP parish not currently listed on the map, enter it here and it will be reviewed for addition. View searchable list of parishes
+              <a href="bcp_ParishTable.html" title="BCP Parish Table" target="_blank" rel="noopener noreferrer">here</a>.
+              Please contact <a href="https://josiah-leinbach.github.io/profile/" title="Josiah Leinbach" target="_blank" rel="noopener noreferrer">Josiah Leinbach</a> with corrections or updates (contact information is at the bottom of the page).
+          </h4>
+        </p>
+        <form name="submit-to-google-sheet" id="contactForm">
+            <div class="form-group">
+                <label for="parish-name">Parish Name *</label>
+                <input type="text" id="parish-name" name="parish-name" placeholder="e.g. Holy Trinity" required>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Street Address *</label>
+                <input type="text" id="street-address" name="street-address" placeholder="e.g. 10 Downing Street" required>
+            </div>
+
+            <div class="form-group">
+                <label for="city">City *</label>
+                <input type="text" id="city" name="city" placeholder="e.g. London" required>
+            </div>
+
+            <div class="form-group">
+                <label for="postcode">Postcode *</label>
+                <input type="text" id="postcode" name="postcode" placeholder="e.g. SW1A 0AA" required>
+            </div>
+            <div class="form-group">
+                <label for="diocese">Diocese *</label>
+                <select id="diocese" name="diocese" required>
+                    <option value="Select a diocese">Select a diocese</option>
+                    <option value="Diocese of Coventry">Diocese of Coventry</option>
+                    <option value="Diocese of Derby">Diocese of Derby</option>
+                    <option value="Diocese of Durham">Diocese of Durham</option>
+                    <option value="Diocese of Ely">Diocese of Ely</option>
+                    <option value="Diocese in Europe">Diocese in Europe</option>
+                    <option value="Diocese of Exeter">Diocese of Exeter</option>
+                    <option value="Diocese of Gloucester">Diocese of Gloucester</option>
+                    <option value="Diocese of Guildford">Diocese of Guildford</option>
+                    <option value="Diocese of Hereford">Diocese of Hereford</option>
+                    <option value="Diocese of Leeds">Diocese of Leeds</option>
+                    <option value="Diocese of Leicester">Diocese of Leicester</option>
+                    <option value="Diocese of Lichfield">Diocese of Lichfield</option>
+                    <option value="Diocese of Lincoln">Diocese of Lincoln</option>
+                    <option value="Diocese of Liverpool">Diocese of Liverpool</option>
+                    <option value="Diocese of London">Diocese of London</option>
+                    <option value="Diocese of Manchester">Diocese of Manchester</option>
+                    <option value="Diocese of Newcastle">Diocese of Newcastle</option>
+                    <option value="Diocese of Norwich">Diocese of Norwich</option>
+                    <option value="Diocese of Oxford">Diocese of Oxford</option>
+                    <option value="Diocese of Peterborough">Diocese of Peterborough</option>
+                    <option value="Diocese of Portsmouth">Diocese of Portsmouth</option>
+                    <option value="Diocese of Rochester">Diocese of Rochester</option>
+                    <option value="Diocese of St Albans">Diocese of St Albans</option>
+                    <option value="Diocese of St Edmundsbury & Ipswich">Diocese of St Edmundsbury & Ipswich</option>
+                    <option value="Diocese of Salisbury">Diocese of Salisbury</option>
+                    <option value="Diocese of Sheffield">Diocese of Sheffield</option>
+                    <option value="Diocese of Sodor and Man">Diocese of Sodor and Man</option>
+                    <option value="Diocese of Southwark">Diocese of Southwark</option>
+                    <option value="Diocese of Southwell & Nottingham">Diocese of Southwell & Nottingham</option>
+                    <option value="Diocese of Truro">Diocese of Truro</option>
+                    <option value="Diocese of Winchester">Diocese of Winchester</option>
+                    <option value="Diocese of Worcester">Diocese of Worcester</option>
+                    <option value="Diocese of York">Diocese of York</option>
+<option value="Anglican Mission in Europe">Anglican Mission in Europe</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="service">Service *</label>
+                <select id="service" name="service" required>
+                    <option value="">Select a service option</option>
+                    <option value="Sunday service">Sunday service</option>
+                    <option value="Secondary/occasional service">Secondary/occasional service</option>
+                    <option value="Both">Both</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="ceec-affiliation">CEEC Affiliation *</label>
+                <select id="ceec-affiliation" name="ceec-affiliation" required>
+                    <option value="">Y/N</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="churchmanship">Churchmanship *</label>
+                <select id="churchmanship" name="churchmanship" required>
+                    <option value="">Select the option that best describes the parish</option>
+                    <option value="Reformed Conformist">Reformed Conformist</option>
+                    <option value="Low Church Evangelical">Low Church Evangelical</option>
+                    <option value="Old High Church">Old High Church</option>
+                    <option value="Anglo-Catholic">Anglo-Catholic</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="male-rector">Male Rector *</label>
+                <select id="male-rector" name="male-rector" required>
+                    <option value="">Y/N</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="website">Website. (If none, then Facebook page or email address.)</label>
+                <input type="text" id="website" name="website" placeholder="Website">
+            </div>
+            <div class="form-group">
+                <label for="note">Note (optional)</label>
+                <input type="text" id="note" name="note" placeholder="Note (optional)">
+            </div>
+            <button type="submit" class="submit-btn" id="submitBtn">
+                Submit
+            </button>
+
+            <div id="statusMessage" class="status-message"></div>
+        </form>
+    </div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwDYtBNHhaaEq-Ulzc25MLoCjKZFJvURj2hpDA6b6ssGIyzKovLIwGyFvXF3kkoBafi5g/exec'
+        const form = document.forms['submit-to-google-sheet']
+        const submitBtn = document.getElementById('submitBtn')
+        const statusMessage = document.getElementById('statusMessage')
+
+        function showMessage(message, type) {
+            statusMessage.textContent = message
+            statusMessage.className = `status-message show ${type}`
+            setTimeout(() => {
+                statusMessage.classList.remove('show')
+            }, 5000)
+        }
+
+        form.addEventListener('submit', e => {
+            e.preventDefault()
+            
+            // Show loading state
+            submitBtn.disabled = true
+            submitBtn.innerHTML = '<span class="loading"></span>Submitting...'
+            
+            fetch(scriptURL, { 
+                method: 'POST', 
+                body: new FormData(form)
+            })
+            .then(response => {
+                if (response.ok) {
+                    showMessage('Parish submitted successfully! Thank you.', 'success')
+                    form.reset() // Clear the form
+                } else {
+                    throw new Error('Network response was not ok')
+                }
+            })
+            .catch(error => {
+                console.error('Error!', error.message)
+                showMessage('Error submitting parish. Please try again.', 'error')
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.disabled = false
+                submitBtn.innerHTML = 'Submit'
+            })
+        })
+    </script>
+</body>
+</html>
