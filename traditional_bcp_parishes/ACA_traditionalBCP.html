@@ -257,15 +257,6 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="service">Service *</label>
-                <select id="service" name="service" required>
-                    <option value="" disabled selected>Select a service option</option>
-                    <option value="Sunday service">Sunday service</option>
-                    <option value="Secondary/occasional service">Secondary/occasional service</option>
-                    <option value="Both">Both</option>
-                </select>
-            </div>
-            <div class="form-group">
                 <label for="churchmanship">Churchmanship *</label>
                 <select id="churchmanship" name="churchmanship" required>
                     <option value="" disabled selected>Select the option that best describes the parish</option>
@@ -275,14 +266,23 @@
                     <option value="Anglo-Catholic">Anglo-Catholic</option>
                 </select>
             </div>
-                      <div class="form-group">
-                <label for="bcp-main">Main BCP *</label>
-                <select id="bcp-main" name="bcp-main" required>
-                    <option value="" disabled selected>Select the parish's main BCP</option>
+            <div class="form-group">
+                <label for="bcpn">BCP *</label>
+                <select id="bcp" name="bcp" required>
+                    <option value="" disabled selected>Select the parish's BCP</option>
                     <option value="1662 BCP">1662 BCP</option>
                     <option value="1978 AAPB">1978 AAPB</option>
                     <option value="1995 APBA">1992 APBA</option>
                     <option value="2012 Common Prayer">2012 Common Prayer</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="service">Service *</label>
+                <select id="service" name="service" required>
+                    <option value="" disabled selected>Select which services the BCP is used in</option>
+                    <option value="Sunday service">Sunday service</option>
+                    <option value="Secondary/occasional service">Secondary/occasional service</option>
+                    <option value="Both">Both</option>
                 </select>
             </div>
             <div class="form-group">
