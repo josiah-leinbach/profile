@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traditional BCP Parishes Map</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Garamond', serif;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/0a/Canaletto_-_St._Paul%27s_Cathedral_-_Google_Art_Project.jpg');
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 45px;
+            padding-bottom: 45px;
+        }
+        .text-field-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .text-field {
+            font-family: 'Garamond', serif;
+            font-size: 16px;
+            padding: 12px 20px;
+            border: 2px solid #8B4513;
+            border-radius: 4px;
+            width: 300px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        .text-field:focus {
+            border-color: #5D4037;
+        }
+        .text-field-label {
+            font-size: 18px;
+            color: #5D4037;
+            margin-bottom: 10px;
+            display: block;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="text-field-container">
+        <label class="text-field-label" for="parish-search">List of Ongoing Traditional Anglican BCP Projects</label>
+        <h4><a href="CofE_traditionalBCP.html" title="Church of England (CofE)">Church of England (CofE)</h4></a>
+        <h4><a href="ACA_traditionalBCP.html" title="Anglican Church of Australia (ACA)">Anglican Church of Australia (ACA)</h4></a>
+        <h4><a href="ACNA_traditionalBCP.html" title="Anglican Church of North America (ACNA)">Anglican Church of North America (ACNA)</h4></a>
+    </div>
+  </body>
+</html>
